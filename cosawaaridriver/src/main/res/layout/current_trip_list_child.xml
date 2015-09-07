@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container"
+    android:padding="16dp">
+
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    card_view:cardCornerRadius="4dp">
+<RelativeLayout
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCurrName"
+        android:layout_marginTop="8dp"
+        android:text="@string/sample_name"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textAppearance="?android:listSeparatorTextViewStyle" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btCall"
+        android:drawableLeft="@android:drawable/ic_menu_call"
+        android:layout_below="@id/tvCurrName"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_below="@+id/btCall"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/sample_hostel"
+        android:id="@+id/tvCurrentTH"
+        android:layout_margin="4dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/btCurrentPicked"
+        android:layout_below="@id/tvCurrentTH"
+        android:text="@string/curr_picked"
+        />
+
+</RelativeLayout>
+</android.support.v7.widget.CardView>
+</FrameLayout>

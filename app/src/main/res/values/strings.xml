@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Cosawaari</string>
+    <string name="title_activity_maps">Cosawaari</string>
+    <string name="changeLocation">View Cab</string>
+</resources>

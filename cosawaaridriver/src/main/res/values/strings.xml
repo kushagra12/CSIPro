@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Cosawaari Driver</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="trip_title">Sample trip</string>
+    <string name="sample_hostel">K block, 415</string>
+    <string name="curr_picked">Picked</string>
+    <string name="sample_name">Kushagra Vaish</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="fragment_first">Current Trip</string>
+    <string name="fragment_second">Trip History</string>
+    <string name="fragment_third">Third</string>
+    <string name="nav_header">Header</string>
+    <string-array name="nav_list">
+        <item>Current Trip</item>
+        <item>Trip History</item>
+        <item>Tracking Info</item>
+    </string-array>
+</resources>
