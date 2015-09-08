@@ -3,12 +3,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_first_fragment"
-            android:title="@string/fragment_first" />
+            android:title="@string/fragment_first"
+            android:checked="true"/>
         <item
             android:id="@+id/nav_second_fragment"
             android:title="@string/fragment_second" />
-        <item
-            android:id="@+id/nav_third_fragment"
-            android:title="@string/fragment_third" />
+
     </group>
 </menu>

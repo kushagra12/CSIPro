@@ -13,6 +13,10 @@
     <string name="fragment_second">Trip History</string>
     <string name="fragment_third">Third</string>
     <string name="nav_header">Header</string>
+    <string name="sample_time_1">Sample time 1</string>
+    <string name="required_arrival_time">Required Arrival Time</string>
+    <string name="actual_arrival_time">Actual Arrival Time</string>
+    <string name="sample_time_2">Sample Time 2</string>
     <string-array name="nav_list">
         <item>Current Trip</item>
         <item>Trip History</item>

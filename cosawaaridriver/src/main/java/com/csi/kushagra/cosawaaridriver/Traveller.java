@@ -12,6 +12,7 @@ public class Traveller {
     private boolean Picked;
     private String name;
 
+
     public UUID getId() {
         return id;
     }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class CurrentTripListFragment extends ListFragment {
     private ArrayList<Traveller> mTravellers;
     private CurrentTripAdapter mCurrentTripAdapter;
+    private static CurrentTripListFragment sCurrentTripListFragment = new CurrentTripListFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,10 @@ public class CurrentTripListFragment extends ListFragment {
         mTravellers = TravellingInfo.getInstance(getActivity()).getDetails();
         mCurrentTripAdapter = new CurrentTripAdapter(mTravellers);
         setListAdapter(mCurrentTripAdapter);
+    }
+
+    public CurrentTripListFragment(){
+
     }
 
     @Override
