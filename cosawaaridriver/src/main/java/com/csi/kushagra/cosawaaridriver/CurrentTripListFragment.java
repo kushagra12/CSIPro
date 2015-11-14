@@ -8,12 +8,19 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.neovisionaries.ws.client.WebSocketException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +28,7 @@ import java.util.ArrayList;
  */
 public class CurrentTripListFragment extends ListFragment {
     private ArrayList<Traveller> mTravellers;
+    private SocketsApp mSockets;
     private CurrentTripAdapter mCurrentTripAdapter;
     private static CurrentTripListFragment sCurrentTripListFragment = new CurrentTripListFragment();
 
@@ -28,6 +36,13 @@ public class CurrentTripListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTravellers = TravellingInfo.getInstance(getActivity()).getDetails();
+        try {
+            mSockets = SocketsApp.getInstance(getActivity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WebSocketException e) {
+            e.printStackTrace();
+        }
         mCurrentTripAdapter = new CurrentTripAdapter(mTravellers);
         setListAdapter(mCurrentTripAdapter);
     }
@@ -42,6 +57,7 @@ public class CurrentTripListFragment extends ListFragment {
         getListView().setDivider(null);
         getListView().setDividerHeight(0);
     }
+
 
     public class CurrentTripAdapter extends ArrayAdapter<Traveller> {
         public CurrentTripAdapter( ArrayList<Traveller> travellers) {
@@ -77,6 +93,18 @@ public class CurrentTripListFragment extends ListFragment {
                     mCurrentTripAdapter.notifyDataSetChanged();
                     cv.setFocusable(false);
                     CurrentTripAddress.setFocusable(false);
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("messageType", "getCurrentTrip");
+                        obj.put("messageData", "");
+                        obj.put("CAB_ID", "1000");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        String s = obj.toString();
+                        Log.d("SENDING DATA", s);
+                        mSockets.send_Message(s);
+                    }
                 }
 
 

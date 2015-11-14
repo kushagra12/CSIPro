@@ -25,5 +25,6 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
-
+    compile 'com.neovisionaries:nv-websocket-client:1.12'
+    compile 'com.google.android.gms:play-services:8.3.0'
 }
