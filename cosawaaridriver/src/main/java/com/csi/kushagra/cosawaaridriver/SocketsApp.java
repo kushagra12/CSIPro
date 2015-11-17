@@ -9,6 +9,10 @@ import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 /**
@@ -22,6 +26,8 @@ public class SocketsApp {
     private static SocketsApp ourInstance;
     private Context mAppContext;
     private WebSocket ws;
+    private TaskCompleted limiter;
+    private TravellingInfo mCurrentTripData;
 
     public static SocketsApp getInstance(Context c) throws IOException, WebSocketException {
         if (ourInstance == null) {
@@ -33,6 +39,13 @@ public class SocketsApp {
     private SocketsApp(Context c) throws IOException, WebSocketException {
         mAppContext = c;
         new SocketTask().execute(open_connection);
+        mCurrentTripData = TravellingInfo.getInstance(mAppContext);
+    }
+
+    public void send_Message(String msg, TaskCompleted l) throws IOException, WebSocketException {
+        //     new SocketTask(l).execute(open_connection);
+        limiter = l;
+        new SocketTask().execute(send_message, msg);
     }
 
     public void send_Message(String msg) {
@@ -68,8 +81,26 @@ public class SocketsApp {
                     .setConnectionTimeout(TIMEOUT)
                     .createSocket(SERVER)
                     .addListener(new WebSocketAdapter() {
-                        public void onTextMessage(WebSocket websocket, String message) {
+                        public void onTextMessage(WebSocket websocket, String message) throws JSONException {
                             Log.d("TAG", message);
+                            JSONObject resp = new JSONObject(message);
+
+                            switch (resp.getString("messageType")) {
+                                case "getCustomerDetailsResponse":
+                                    mCurrentTripData.clearData();
+                                    JSONArray array = resp.getJSONArray("CUSTOMER_DETAILS");
+                                    mCurrentTripData.setTripId(resp.getInt("TRIP_ID"));
+                                    for (int i = 0; i < array.length(); i++) {
+                                        Traveller t = new Traveller();
+                                        JSONObject content = array.getJSONObject(i);
+                                        t.setAddress(content.getString("PickupPoint"));
+                                        t.setName(content.getString("Name"));
+                                        t.setPhoneNo(content.getString("PhoneNumber"));
+                                        mCurrentTripData.addTraveller(t);
+                                    }
+                                    limiter.onComplete();
+                                    break;
+                            }
                         }
                     })
                     .connect();
@@ -78,5 +109,6 @@ public class SocketsApp {
         public void sendSocketMessage(String message) {
             ws.sendText(message);
         }
+
     }
 }

@@ -12,8 +12,10 @@ import android.widget.TextView;
 public class CurrentTripFragment extends Fragment {
 
 
+    private TravellingInfo mData;
+
     public CurrentTripFragment() {
-        // Required empty public constructor
+        mData = TravellingInfo.getInstance(getActivity());
     }
 
     @Override
@@ -27,8 +29,8 @@ public class CurrentTripFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_curr_trip, container, false);
         TextView CurrentTripId = (TextView) v.findViewById(R.id.tvtript);
-        int randomPIN = (int)(Math.random()*9000)+1000;
-        CurrentTripId.setText("Trip No: "+ String.valueOf(randomPIN) );
+        //   int randomPIN = (int)(Math.random()*9000)+1000;
+        CurrentTripId.setText("Trip No: " + String.valueOf(mData.getTripId()));
         CurrentTripListFragment listFragment = new CurrentTripListFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container_2,listFragment).commit();
         return v;

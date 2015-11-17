@@ -13,6 +13,16 @@ public class TravellingInfo {
     private static TravellingInfo ourInstance;
     private Context mAppContext;
 
+    public int getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
+    }
+
+    private int tripId;
+
     public static TravellingInfo getInstance(Context c) {
         if(ourInstance == null){
             ourInstance = new TravellingInfo(c);
@@ -38,6 +48,15 @@ public class TravellingInfo {
     public ArrayList<Traveller> getDetails(){
         return mTravellers;
     }
+
+    public void clearData() {
+        mTravellers.clear();
+    }
+
+    public void addTraveller(Traveller t) {
+        mTravellers.add(t);
+    }
+
 
     public Traveller getDetail(UUID id){
         for(Traveller T: mTravellers){

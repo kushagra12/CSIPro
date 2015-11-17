@@ -51,6 +51,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
         createLocationRequest();
 
+
         fr1 = new CurrentTripFragment();
         fr2 = new TripHistoryListFragment();
         try {
@@ -71,10 +72,38 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         assert ab != null;
         ab.setHomeAsUpIndicator(R.drawable.ic_view_headline_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
-        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        setUpFragment();
         setUpDrawer(nvDrawer);
+    }
+
+    public void setUpFragment() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("messageType", "getCustomerDetails");
+            obj.put("messageData", "");
+            obj.put("DRIVER_ID", "1000");
+            obj.put("TRIP_ID", "36");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            String s = obj.toString();
+            Log.d("SENDING DATA", s);
+            try {
+                mSockets.send_Message(s, new TaskCompleted() {
+                    @Override
+                    public void onComplete() {
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        // Log.d("SUCCESS", "YEA ITS DONE");
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (WebSocketException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -116,13 +145,13 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             case R.id.nav_first_fragment:
                 if(fragment != fr1) {
                     fragment = fr1;
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+                    setUpFragment();
                 }
                 break;
             case R.id.nav_second_fragment:
                 if(fragment != fr2){
                     fragment = fr2;
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+                    setUpFragment();
                 }
                 break;
             default:
@@ -137,7 +166,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     }
 
     protected synchronized void buildGoogleApiClient() {
-        Log.d(TAG, "Working");
+        //   Log.d(TAG, "Working");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -198,12 +227,15 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onLocationChanged(Location location) {
+
         JSONObject obj = new JSONObject();
         try {
             obj.put("messageType", "Tracking");
             obj.put("messageData", "");
             obj.put("lat", location.getLatitude());
             obj.put("lng", location.getLongitude());
+            obj.put("DRIVER_ID", "1000");
+            obj.put("TRIP_ID", "36");
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
