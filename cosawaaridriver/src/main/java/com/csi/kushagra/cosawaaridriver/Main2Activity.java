@@ -1,6 +1,9 @@
 package com.csi.kushagra.cosawaaridriver;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -39,10 +42,33 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     private static final String TAG = Main2Activity.class.getSimpleName();
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        Intent intent = getIntent();
+
+        if (intent != null) {
+            String message = intent.getStringExtra(Login.EXTRA_MESSAGE);
+            if (message != null) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("DRIVER_ID", Integer.parseInt(message));
+                editor.commit();
+            }
+        }
+
+        int defaultValue = Integer.parseInt(getResources().getString(R.string.default_id));
+        long driver_id = sharedPref.getInt("DRIVER_ID", defaultValue);
+
+        if (driver_id == defaultValue) {
+            loadLogin();
+        }
+
         setContentView(R.layout.fragment_container);
+
 
         // First we need to check availability of play services
         if (checkPlayServices()) {
@@ -52,7 +78,13 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         createLocationRequest();
 
 
-        fr1 = new CurrentTripFragment();
+        try {
+            fr1 = new CurrentTripFragment();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WebSocketException e) {
+            e.printStackTrace();
+        }
         fr2 = new TripHistoryListFragment();
         try {
             mSockets = SocketsApp.getInstance(this);
@@ -76,6 +108,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setUpFragment();
         setUpDrawer(nvDrawer);
+    }
+
+    public void loadLogin() {
+        Intent i = new Intent(this, Login.class);
+        startActivity(i);
     }
 
     public void setUpFragment() {
@@ -134,6 +171,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mGoogleApiClient.disconnect();
     }
 

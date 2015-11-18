@@ -11,8 +11,17 @@
         />
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/fragment_container_2"/>
+        android:layout_height="406dp"
+        android:id="@+id/fragment_container_2">
+
+    </FrameLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_trip"
+        android:id="@+id/btEndTrip"
+        android:layout_gravity="center_horizontal|bottom" />
 
 
 </LinearLayout>

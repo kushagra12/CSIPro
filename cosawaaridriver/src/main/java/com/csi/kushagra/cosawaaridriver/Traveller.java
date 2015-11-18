@@ -12,6 +12,16 @@ public class Traveller {
     private boolean Picked;
     private String name;
 
+    public int getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(int invoice) {
+        this.invoice = invoice;
+    }
+
+    private int invoice;
+
 
     public UUID getId() {
         return id;

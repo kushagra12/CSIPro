@@ -30,7 +30,7 @@ public class CurrentTripListFragment extends ListFragment {
     private ArrayList<Traveller> mTravellers;
     private SocketsApp mSockets;
     private CurrentTripAdapter mCurrentTripAdapter;
-    private static CurrentTripListFragment sCurrentTripListFragment = new CurrentTripListFragment();
+    //   private static CurrentTripListFragment sCurrentTripListFragment = new CurrentTripListFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,12 +78,14 @@ public class CurrentTripListFragment extends ListFragment {
             final Button CurrentTripNumber = (Button) convertView.findViewById(R.id.btCall);
             CurrentTripNumber.setText(t.getPhoneNo());
             final CardView cv = (CardView) convertView.findViewById(R.id.card_view);
-            Button CurrentTripPicked = (Button) convertView.findViewById(R.id.btCurrentPicked);
+            final Button CurrentTripPicked = (Button) convertView.findViewById(R.id.btCurrentPicked);
 
             if(t.isPicked()){
                 cv.setCardBackgroundColor(Color.DKGRAY);
                 CurrentTripName.setTextColor(Color.WHITE);
                 CurrentTripAddress.setTextColor(Color.WHITE);
+                CurrentTripAddress.setFocusable(false);
+                CurrentTripPicked.setEnabled(false);
             }
 
             CurrentTripPicked.setOnClickListener(new View.OnClickListener() {
@@ -93,11 +95,15 @@ public class CurrentTripListFragment extends ListFragment {
                     mCurrentTripAdapter.notifyDataSetChanged();
                     cv.setFocusable(false);
                     CurrentTripAddress.setFocusable(false);
+                    CurrentTripPicked.setEnabled(false);
                     JSONObject obj = new JSONObject();
                     try {
-                        obj.put("messageType", "getCurrentTrip");
+                        obj.put("messageType", "isPicked");
                         obj.put("messageData", "");
-                        obj.put("CAB_ID", "1000");
+                        obj.put("DRIVER_ID", "1000");
+                        obj.put("TRIP_ID", TravellingInfo.getInstance(getActivity()).getTripId());
+                        obj.put("INVOICE_NUM", t.getInvoice());
+                        obj.put("PICKED", "YES");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } finally {

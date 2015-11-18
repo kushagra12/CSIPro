@@ -9,11 +9,17 @@ import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by welcome on 11/13/2015.
@@ -41,6 +47,7 @@ public class SocketsApp {
         new SocketTask().execute(open_connection);
         mCurrentTripData = TravellingInfo.getInstance(mAppContext);
     }
+
 
     public void send_Message(String msg, TaskCompleted l) throws IOException, WebSocketException {
         //     new SocketTask(l).execute(open_connection);
@@ -96,14 +103,37 @@ public class SocketsApp {
                                         t.setAddress(content.getString("PickupPoint"));
                                         t.setName(content.getString("Name"));
                                         t.setPhoneNo(content.getString("PhoneNumber"));
+                                        t.setInvoice(content.getInt("InvoiceNum"));
+                                        t.setPicked(content.getString("PICKED").equals("YES"));
                                         mCurrentTripData.addTraveller(t);
                                     }
                                     limiter.onComplete();
+                                    break;
+                                case "TrackingResponse":
+                                    makeRequest("https://cosawarri-koolkushagra.c9users.io/putData", message);
+                                    Log.d("CHECK1", "Done");
                                     break;
                             }
                         }
                     })
                     .connect();
+        }
+
+        public HttpResponse makeRequest(String uri, String json) {
+            try {
+                HttpPost httpPost = new HttpPost(uri);
+                httpPost.setEntity(new StringEntity(json));
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
+                return new DefaultHttpClient().execute(httpPost);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         public void sendSocketMessage(String message) {
