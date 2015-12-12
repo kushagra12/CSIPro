@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="@color/colorCardBackground">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tell us your Experience"
+        android:id="@+id/textView13"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/colorPrimary" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView13"
+        android:id="@+id/cvRating">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate Your Ride"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorPrimary"
+                android:textAppearance="?android:listSeparatorTextViewStyle"
+                android:textSize="16sp"
+                android:id="@+id/tvRate"
+                android:padding="10dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_below="@id/tvRate"
+                android:layout_marginTop="1dp"
+                android:layout_alignParentStart="true" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:layout_marginTop="56dp"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/ratingBar"
+                android:id="@+id/etFeedBack"
+                android:hint="Tell us where we can improve"
+                android:layout_marginTop="48dp"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_below="@id/etFeedBack"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="24dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Feedback"
+                android:id="@+id/btFeedback"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/etFeedBack"
+                android:textAppearance="?android:listSeparatorTextViewStyle"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="24dp" />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Crafted by: Kushagra Vaish"
+        android:id="@+id/textView24"
+        android:layout_below="@+id/cvRating"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
+
+</RelativeLayout>

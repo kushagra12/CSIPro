@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neovisionaries.ws.client.WebSocketException;
 
@@ -66,9 +67,10 @@ public class CurrentTripListFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null){
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.current_trip_list_child, null);
-            }
+
+            convertView = getActivity().getLayoutInflater().inflate(R.layout.current_trip_list_child, null);
+
+
             final Traveller t = getItem(position);
 
             TextView CurrentTripName = (TextView) convertView.findViewById(R.id.tvCurrName);
@@ -91,28 +93,30 @@ public class CurrentTripListFragment extends ListFragment {
             CurrentTripPicked.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if (TravellingInfo.getInstance(getActivity()).getStatus() == CurrentTripFragment.STARTED) {
                     t.setPicked(true);
                     mCurrentTripAdapter.notifyDataSetChanged();
-                    cv.setFocusable(false);
-                    CurrentTripAddress.setFocusable(false);
-                    CurrentTripPicked.setEnabled(false);
                     JSONObject obj = new JSONObject();
-                    try {
-                        obj.put("messageType", "isPicked");
-                        obj.put("messageData", "");
-                        obj.put("DRIVER_ID", "1000");
-                        obj.put("TRIP_ID", TravellingInfo.getInstance(getActivity()).getTripId());
-                        obj.put("INVOICE_NUM", t.getInvoice());
-                        obj.put("PICKED", "YES");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } finally {
-                        String s = obj.toString();
-                        Log.d("SENDING DATA", s);
-                        mSockets.send_Message(s);
+
+                        try {
+                            obj.put("messageType", "isPicked");
+                            obj.put("messageData", "");
+                            obj.put("DRIVER_ID", TravellingInfo.getInstance(getActivity()).getDriverId());
+                            obj.put("TRIP_ID", TravellingInfo.getInstance(getActivity()).getTripId());
+                            obj.put("INVOICE_NUM", t.getInvoice());
+                            obj.put("PICKED", "YES");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } finally {
+                            String s = obj.toString();
+                            Log.d("SENDING DATA", s);
+                            mSockets.send_Message(s);
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Trip Not Started", Toast.LENGTH_LONG).show();
                     }
                 }
-
 
             });
 

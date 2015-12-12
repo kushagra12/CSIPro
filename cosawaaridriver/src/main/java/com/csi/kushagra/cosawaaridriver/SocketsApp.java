@@ -3,23 +3,20 @@ package com.csi.kushagra.cosawaaridriver;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.GregorianCalendar;
 
 /**
  * Created by welcome on 11/13/2015.
@@ -34,11 +31,17 @@ public class SocketsApp {
     private WebSocket ws;
     private TaskCompleted limiter;
     private TravellingInfo mCurrentTripData;
+    private static int isConnected;
+
+    public static final int OK = 1;
+    public static final int ERROR = 2;
 
     public static SocketsApp getInstance(Context c) throws IOException, WebSocketException {
         if (ourInstance == null) {
             ourInstance = new SocketsApp(c);
         }
+
+
         return ourInstance;
     }
 
@@ -46,16 +49,25 @@ public class SocketsApp {
         mAppContext = c;
         new SocketTask().execute(open_connection);
         mCurrentTripData = TravellingInfo.getInstance(mAppContext);
+        isConnected = 0;
     }
 
+
+    public int reload() {
+        new SocketTask().execute(open_connection);
+        return isConnected;
+    }
 
     public void send_Message(String msg, TaskCompleted l) throws IOException, WebSocketException {
         //     new SocketTask(l).execute(open_connection);
+
         limiter = l;
         new SocketTask().execute(send_message, msg);
+
     }
 
     public void send_Message(String msg) {
+        //if (isConnected == 1)
         new SocketTask().execute(send_message, msg);
     }
 
@@ -69,14 +81,18 @@ public class SocketsApp {
                 case open_connection:
                     try {
                         ws = connect();
+                        isConnected = 1;
                     } catch (IOException e) {
                         e.printStackTrace();
+                        isConnected = 0;
                     } catch (WebSocketException e) {
                         e.printStackTrace();
+                        isConnected = 0;
                     }
                     break;
                 case send_message:
                     String msg = params[1];
+                    if (isConnected == 1)
                     sendSocketMessage(msg);
                     break;
             }
@@ -95,8 +111,11 @@ public class SocketsApp {
                             switch (resp.getString("messageType")) {
                                 case "getCustomerDetailsResponse":
                                     mCurrentTripData.clearData();
+                                    mCurrentTripData.setStatus(CurrentTripFragment.NOT_STARTED);
                                     JSONArray array = resp.getJSONArray("CUSTOMER_DETAILS");
-                                    mCurrentTripData.setTripId(resp.getInt("TRIP_ID"));
+                                    //mCurrentTripData.setTripId(resp.getInt("TRIP_ID"));
+                                    mCurrentTripData.setTime(resp.getString("SCHEDULEDTIME"));
+
                                     for (int i = 0; i < array.length(); i++) {
                                         Traveller t = new Traveller();
                                         JSONObject content = array.getJSONObject(i);
@@ -107,11 +126,41 @@ public class SocketsApp {
                                         t.setPicked(content.getString("PICKED").equals("YES"));
                                         mCurrentTripData.addTraveller(t);
                                     }
-                                    limiter.onComplete();
+                                    limiter.onComplete(OK);
+                                    break;
+                                case "getCurrentTripResponse":
+                                    mCurrentTripData.setTripId(Integer.parseInt(resp.getString("TRIP_ID")));
+                                    mCurrentTripData.setDriverName(resp.getString("DRIVER_NAME"));
+                                    mCurrentTripData.setStatus(Integer.parseInt("0"));
+                                    limiter.onComplete(OK);
                                     break;
                                 case "TrackingResponse":
-                                    makeRequest("https://cosawarri-koolkushagra.c9users.io/putData", message);
-                                    Log.d("CHECK1", "Done");
+                                    //makeRequest("https://cosawarri-koolkushagra.c9users.io/putData", message);
+                                    //Log.d("CHECK1", "Done");
+                                    break;
+                                case "endTripResponse":
+                                    if (resp.getString("messageData").equals("SUCCESS")) {
+                                        limiter.onComplete(OK);
+                                    } else {
+                                        limiter.onComplete(ERROR);
+                                    }
+                                    break;
+                                case "getTripHistoryDetailsResponse":
+                                    TripHistoryInfo.getInstance(mAppContext).clearData();
+                                    JSONArray array2 = resp.getJSONArray("COMPLETEDTRIPS");
+                                    for (int i = 0; i < array2.length(); i++) {
+                                        TripHistory t = new TripHistory();
+                                        t.setTripId(Integer.parseInt((String) array2.get(i)));
+                                        t.setRequiredTime(new GregorianCalendar(2015, 10, 10, 14, 11, 0));
+                                        t.setActualTime(new GregorianCalendar(2015, 10, 10, 14 + i, 11, 0));
+                                        TripHistoryInfo.getInstance(mAppContext).addHistory(t);
+                                    }
+                                    limiter.onComplete(OK);
+                                    break;
+                                case "isPickedResponse":
+                                    if (resp.getString("PICKED").equals("FAILURE")) {
+                                        Toast.makeText(mAppContext, "ERROR", Toast.LENGTH_LONG).show();
+                                    }
                                     break;
                             }
                         }
@@ -119,22 +168,6 @@ public class SocketsApp {
                     .connect();
         }
 
-        public HttpResponse makeRequest(String uri, String json) {
-            try {
-                HttpPost httpPost = new HttpPost(uri);
-                httpPost.setEntity(new StringEntity(json));
-                httpPost.setHeader("Accept", "application/json");
-                httpPost.setHeader("Content-type", "application/json");
-                return new DefaultHttpClient().execute(httpPost);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
 
         public void sendSocketMessage(String message) {
             ws.sendText(message);

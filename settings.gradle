@@ -1,1 +1,1 @@
-include ':app', ':cosawaaridriver'
+include ':app', ':cosawaaridriver', ':clientapp'

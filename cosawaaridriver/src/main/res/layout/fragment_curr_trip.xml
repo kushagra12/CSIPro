@@ -1,27 +1,47 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"  tools:context=".Main2Activity" android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Main2Activity"
+    android:orientation="vertical">
 
     <TextView android:text="@string/trip_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvtript"
-        android:padding="@dimen/abc_text_size_display_1_material"
         android:layout_gravity="center"
-        />
+        style="@android:style/TextAppearance.Holo.Large"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dip" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:text="@string/trip_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTripNo"
+        android:layout_gravity="center"
+        android:layout_below="@+id/tvtript"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp" />
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="406dp"
-        android:id="@+id/fragment_container_2">
+        android:layout_height="330dip"
+        android:id="@+id/fragment_container_2"
+        android:layout_above="@+id/btStartTrip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvTripNo">
 
     </FrameLayout>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/end_trip"
-        android:id="@+id/btEndTrip"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:text="@string/start_trip"
+        android:id="@+id/btStartTrip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
-</LinearLayout>
+</RelativeLayout>

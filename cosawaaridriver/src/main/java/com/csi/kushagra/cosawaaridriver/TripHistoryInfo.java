@@ -23,18 +23,15 @@ public class TripHistoryInfo {
     private TripHistoryInfo(Context c) {
         mAppContext = c;
         mTripHistories = new ArrayList<TripHistory>();
-        for(int i = 0; i <4; i++){
-            TripHistory t = new TripHistory();
-            int randomPIN = (int)(Math.random()*9000)+1000;
-            t.setTripId(randomPIN);
-            t.setRequiredTime(new GregorianCalendar(2015,10,10,14,11,0));
-            t.setActualTime(new GregorianCalendar(2015,10,10,14 + i,11,0));
-            mTripHistories.add(t);
-        }
+
     }
 
     public ArrayList<TripHistory> getDetails(){
         return mTripHistories;
+    }
+
+    public void clearData() {
+        mTripHistories.clear();
     }
 
     public TripHistory getTripHistory(UUID id){
@@ -44,5 +41,9 @@ public class TripHistoryInfo {
             }
         }
         return null;
+    }
+
+    public void addHistory(TripHistory t) {
+        mTripHistories.add(t);
     }
 }

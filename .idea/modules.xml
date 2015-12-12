@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CSIPro.iml" filepath="$PROJECT_DIR$/CSIPro.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/clientapp/clientapp.iml" filepath="$PROJECT_DIR$/clientapp/clientapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/cosawaaridriver/cosawaaridriver.iml" filepath="$PROJECT_DIR$/cosawaaridriver/cosawaaridriver.iml" />
     </modules>
   </component>

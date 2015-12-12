@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="@color/colorCardBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Profile"
+            android:id="@+id/textView16"
+            android:layout_marginBottom="16dp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/textView16">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:listSeparatorTextViewStyle"
+                    android:text="Name"
+                    android:id="@+id/textView17"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/editText"
+                    android:layout_below="@+id/textView17"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:listSeparatorTextViewStyle"
+                    android:text="Phone"
+                    android:id="@+id/textView18"
+                    android:layout_below="@+id/editText"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/editText2"
+                    android:layout_below="@+id/textView18"
+                    android:layout_centerHorizontal="true" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:listSeparatorTextViewStyle"
+                    android:text="Guardian Phone"
+                    android:id="@+id/textView20"
+                    android:layout_below="@+id/editText2"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/editText4"
+                    android:layout_below="@+id/textView20"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:listSeparatorTextViewStyle"
+                    android:text="Pickup Point"
+                    android:id="@+id/textView19"
+                    android:layout_below="@+id/editText4"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimary" />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner"
+                    android:layout_below="@id/textView19"
+                    android:layout_centerHorizontal="true"
+                    android:entries="@array/spinnerItems"
+                    android:drawSelectorOnTop="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+
+                    />
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:text="Edit Profile"
+            android:id="@+id/button"
+            android:layout_marginTop="32dp" />
+    </LinearLayout>
+</ScrollView>

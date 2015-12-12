@@ -9,5 +9,12 @@
             android:id="@+id/nav_second_fragment"
             android:title="@string/fragment_second" />
 
+        <item
+            android:id="@+id/nav_third_fragment"
+            android:title="@string/fragment_third" />
+
+        <item
+            android:id="@+id/nav_login_activity"
+            android:title="@string/logout" />
     </group>
 </menu>

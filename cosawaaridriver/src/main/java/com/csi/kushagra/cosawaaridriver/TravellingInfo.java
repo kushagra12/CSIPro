@@ -13,15 +13,55 @@ public class TravellingInfo {
     private static TravellingInfo ourInstance;
     private Context mAppContext;
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    private int status;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    private String time;
+
     public int getTripId() {
         return tripId;
     }
+
+    public int getDriverId() {
+        return DriverId;
+    }
+
+    public void setDriverId(int driverId) {
+        DriverId = driverId;
+    }
+
+    private int DriverId;
 
     public void setTripId(int tripId) {
         this.tripId = tripId;
     }
 
     private int tripId;
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    private String driverName;
 
     public static TravellingInfo getInstance(Context c) {
         if(ourInstance == null){
@@ -33,15 +73,9 @@ public class TravellingInfo {
 
     private TravellingInfo(Context appContext) {
         mAppContext = appContext;
+        DriverId = 0;
         mTravellers = new ArrayList<Traveller>();
-        for(int i = 0; i < 4; i++){
-            Traveller t = new Traveller();
-            t.setAddress("Address Location "+ (i+1));
-            t.setName("Passenger #"+i);
-            t.setPhoneNo("123456789");
-            t.setPicked(false);
-            mTravellers.add(t);
-        }
+        setStatus(0);
 
     }
 
